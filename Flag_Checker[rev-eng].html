@@ -1,0 +1,103 @@
+This one requires you to either be good at python/programming or good at asking an AI the right questions.
+I like to think of myself as an intermediate at both of those, but I have minimal python experience (my only OOP
+has been in C++ and Java).
+
+The challenge is as follows:
+We found this cryptic Python script that validates the user's flag, but we're having trouble understanding the code. Can you find the correct flag that passes through the program?
+
+The code they provided is as follows:
+┌──(trhodes㉿kali)-[~/Downloads]
+└─$ cat pyrev.py
+phoneSteak = [55, 33, 52, 40, 35, 56, 86, 90, 66, 111, 81, 26, 23, 75, 109, 26, 88, 90, 75, 67, 92, 25, 87, 88, 92, 84, 23, 88]
+
+libraryDiscussion = input("Enter the flag: ")
+confusedSheep = [ord(herdSlot) for herdSlot in libraryDiscussion]
+mintFarm = len(confusedSheep)
+trustBreed = len(phoneSteak)
+
+seaTent = 6
+callCover = 17
+foxEmbox = (248 // trustBreed) % trustBreed
+outfitStrike = 10
+brushCopy = (341 // trustBreed) % 17
+injectPush = (1240 + 28 // trustBreed) % trustBreed
+
+makeupRoof = []
+tinRoyalty = []
+if trustBreed == mintFarm:
+    for heartCool in confusedSheep:
+        makeupRoof.append(heartCool - 27)
+    for angelStay in makeupRoof:
+        tinRoyalty.append(angelStay ^ 15)
+
+    franchisePath = tinRoyalty[seaTent]
+    tinRoyalty[seaTent] = tinRoyalty[injectPush]
+    tinRoyalty[injectPush] = franchisePath
+    eastGhostwriter  = tinRoyalty[outfitStrike]
+
+    tinRoyalty[outfitStrike] = tinRoyalty[foxEmbox]
+    tinRoyalty[foxEmbox] = eastGhostwriter
+    personPioneer = tinRoyalty[callCover]
+
+    tinRoyalty[callCover] = tinRoyalty[brushCopy]
+    tinRoyalty[brushCopy] = personPioneer
+
+    lineMoon = tinRoyalty[0 : len(tinRoyalty) // 2]
+    puddingCommission = tinRoyalty[len(tinRoyalty) // 2 : len(tinRoyalty)]
+    furRegret = lineMoon + puddingCommission[::-1]
+    tinRoyalty = furRegret
+
+    if tinRoyalty == phoneSteak:
+        print("Correct!! :)")
+    else:
+        print("Incorrect flag :(")
+
+else:
+    print("Incorrect :(")
+
+
+So, the tinRoyalty variable must match the phoneSteak variable. Starting there, the steps are:
+- Reverse the reordering step by splitting phoneSteak into two parts, reverse the second half, and concatenate them.
+- Now reverse the swaps (reverse the indices in reverse order).
+- Reverse the XOR and then subtract.
+- Convert the ASCII variables into characters.
+
+I'm not THAT smart, so I asked OpenAI for some help and we came up with the following solution:
+
+The solution:
+phoneSteak = [55, 33, 52, 40, 35, 56, 86, 90, 66, 111, 81, 26, 23, 75, 109, 26, 88, 90, 75, 67, 92, 25, 87, 88, 92, 84, 23, 88]
+
+# Reorder reversal
+mid = len(phoneSteak) // 2
+lineMoon = phoneSteak[:mid]
+puddingCommission = phoneSteak[mid:][::-1]
+tinRoyalty = lineMoon + puddingCommission
+
+# Swaps reversal
+def reverse_swap(lst, idx1, idx2):
+    lst[idx1], lst[idx2] = lst[idx2], lst[idx1]
+
+# Indices
+seaTent = 6
+callCover = 17
+foxEmbox = (248 // 28) % 28
+outfitStrike = 10
+brushCopy = (341 // 28) % 17
+injectPush = (1240 + 28 // 28) % 28
+
+# Reverse swaps
+reverse_swap(tinRoyalty, callCover, brushCopy)
+reverse_swap(tinRoyalty, outfitStrike, foxEmbox)
+reverse_swap(tinRoyalty, seaTent, injectPush)
+
+# XOR and subtraction reversal
+tinRoyalty = [(x ^ 15) + 27 for x in tinRoyalty]
+
+# Convert to characters
+flag = ''.join(chr(x) for x in tinRoyalty)
+print("The flag is:", flag)
+
+Placing that into "solution.py" and executing it will print:
+┌──(trhodes㉿kali)-[~/Downloads]
+└─$ python solution.py
+The flag is: SIVBGR{pyth0n_r3v3rs1ng_pr0}
