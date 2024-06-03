@@ -15,10 +15,10 @@ part with a javascript tag and I never saw an alert() box, so it's my assumption
 filtering out tags, and without a database, we may as well look at another method. I had to use Google
 to get a quick read up on how XXEs work, and it seems that, so I just tried adding a part. Going to
 the front page shows my new part! And the source showed it's part number six thousand something, but
-only the first three parts are shown. I now go to the Firefox browser and open the page and I noticed
+only the first three parts are shown. I now go to the Firefox browser and open the page and I notice
 something, my part is't there! Flipping back to Burp, I see that we have a session so I assume the
-added parts involve the session ID. So what now? Well, without a need to authenticate, but a need to
-make sure we keep within the session, I crafted the following shell to create and store a part (this
+added parts involve the session ID. So what now? Well, without a need to authenticate but a need to
+make sure we keep within the session, I crafted the following shell to create and store and a part (this
 is the execution of my payload):
 
 ┌──(trhodes㉿kali)-[~/Downloads/USC]
@@ -38,9 +38,11 @@ is the execution of my payload):
 <h1>Redirecting...</h1>
 <p>You should be redirected automatically to the target URL: <a href="/">/</a>. If not, click the link.
 
-NOTE: I am using "-c" to save the cookie data. Even without a login, it will save our session ID to the cookie jar
+         <img src="partshop0.png height="500" width="500">
+         
+NOTE: I use "-c" to save the cookie data. Even without a login, it will save our session ID to the cookie jar
 and I can use it going forward. This output resembles my manual addition, but it's at the command line, so we need
-make sure we use that session. I attempted to get the "next part" available but that failed (see my execution here,
+to use that session. I attempted to get the "next part" available but that failed (see my execution here,
 as before, with a -x so you can see what I ran):
   
 ┌──(trhodes㉿kali)-[~/Downloads/USC]
@@ -50,15 +52,17 @@ as before, with a -x so you can see what I ran):
 <html lang=en>
 <title>404 Not Found</title>
 <h1>Not Found</h1>
-<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+<p>The requested URL was not found on the server. If you entered the URL manually, please check your spelling and try again.</p>
 
-What did this mean to me? It meant to me that someone must have added an item since I ran my script, or perhaps
+What did this mean to me? It meant that someone must have added an item since I ran my script, or perhaps
 several people added items! There are around 1000 players, it's possible such a race condition existed. To make
 this easier, I copied the session from the cookies.txt file and flipped back to Burp. Once the Burp window was
 was back in front of me, I just did a refresh in the Burp browser and, in the request, I replaced the session ID
 with the one created from my script and clicked forward. Tada, flag:
 
 SIVBGR{fu11y_upgr4d3d}
+
+         <img src="partshop1.png" height="500" width="500">
 
 And done! FYI, here are my default scripts:
 
