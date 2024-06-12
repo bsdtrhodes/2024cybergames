@@ -79,12 +79,27 @@ build_different.7z  built_different.txt  common_passwords_rock.zip  short_n_swee
 
 It hints that the rockyou wordlist should be used against this zip file. The manual page for fcrackzip states:
 
-
-       -b, --brute-force
-              Select brute force mode. This tries all possible combinations of the letters you specify.
-
        -D, --dictionary
               Select  dictionary  mode.  In  this  mode, fcrackzip will read passwords from a file, which must contain one password per line and should be alphabetically sorted (e.g. using
               sort(1)).
+With that, it's time to start cracking. We will use the -D for a dictionary file, but mix it with -u to reduce false positives and -p
+so specify the passwords line by line. With this, we have the password and the flag:
 
-With that information, we know our arguments will be "-b -D" and will use the /usr/share/wordlists/rockyou.txt dictionary file.
+┌──(trhodes㉿kali)-[~/Downloads/unknown]
+└─$ fcrackzip -u -D -p /usr/share/wordlists/rockyou.txt common_passwords_rock.zip
+
+
+PASSWORD FOUND!!!!: pw == 123456789123456789
+
+┌──(trhodes㉿kali)-[~/Downloads/unknown]
+└─$ unzip common_passwords_rock.zip
+Archive:  common_passwords_rock.zip
+[common_passwords_rock.zip] flag.txt password:
+ extracting: flag.txt
+
+┌──(trhodes㉿kali)-[~/Downloads/unknown]
+└─$ cat flag.txt
+SIVBGR{P@SSW0RDZ_R_H@RD}
+
+And there's our flag.
+
