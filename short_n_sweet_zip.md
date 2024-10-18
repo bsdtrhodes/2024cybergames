@@ -1,11 +1,11 @@
-This was done post-games. Someone in the chat said they used fcrackzip, which I have never seen before, but is available in Kali if you just install it with apt(8). This
-was the comment, I think by a user of "Hugo" and I am posting it completely:
+This was done post-games. Someone in the chat said they used fcrackzip, which I have never seen before but is available in Kali if you just install it with apt(8). This
+was the comment, I think, by a user of "Hugo," and I am posting it completely:
   "oh no! 
   sudo fcrackzip -b -u -v -l 1-7 short_n_sweet.zip 
   That’s how I was able to brute force it. I kept the pw length (-l) between 1-7. 
-  Try also: Use crack station, and you got the cleartext immediately"
+  Try also using the crack station, and you will get the cleartext immediately."
 
-They are correct, running that line gives the password:
+They are correct; running that line gives the password:
 
 ┌──(trhodes㉿kali)-[~/Downloads/unknown]
 └─$ fcrackzip -b -u -v -l 1-7 short_n_sweet.zip
@@ -28,10 +28,10 @@ Archive:  short_n_sweet.zip
 └─$ ls
 build_different.7z  built_different.txt  short_n_sweet.zip
 
-There was a follow-up the comments, since the CTF was over, and it noted, as quoted here:
+There was a follow-up to the comments since the CTF was over, and it noted, as quoted here:
 "The built_different.txt file had a bunch of hash values, and one of them spelled out Maramoros, which was the pw for build_different.7z."
 
-I found this is NOT the case, and probably a typo, the password was actually Matamoros." Indeed, Crackstation (<a href="https://crackstation.net/">crackstation.net</a> will
+I found this is NOT the case, and probably a typo; the password was actually Matamoros." Indeed, Crackstation (<a href="https://crackstation.net/">crackstation.net</a> will
 tell you this if you paste the contents of the entire file:
 
 290c5768c4c300bb5d94c5e48566d940	md2	Matamoros
@@ -102,4 +102,3 @@ Archive:  common_passwords_rock.zip
 SIVBGR{P@SSW0RDZ_R_H@RD}
 
 And there's our flag.
-
