@@ -1,10 +1,10 @@
-This challenge was a kind of good morning challenge that I began and finished while having
+This was a kind of good morning challenge that I began and finished with
 the morning cup of coffee. It's fun how games will sometimes have a running theme, such as
 this where we have aliens. For this challenge, we have a .eml file, "URGENT_Proof_of_UFO_Read_in_a_secure_location.eml,"
 and the challenge description:
 
-This challenge is composed of an email, more specifically a .eml file. The email introduces the theme for the forensics
-group, which is a whistleblower announcing that alien life exists on Earth, and the government knows about it.
+This challenge is composed of an email, more specifically, a .eml file. The email introduces the theme for the forensics
+group: a whistleblower announcing that alien life exists on Earth, and the government knows about it.
 
 Reading the email, we have the following:
 ┌──(trhodes㉿kali)-[~/Downloads]
@@ -62,11 +62,11 @@ ngtKRAAAADgAAAAMABgAAAAAAAEAAACkgQAAAABldmlkZW5jZS50eHRVVAUAAxnrOmZ1eAsAAQTo
 AwAABAAAAABQSwUGAAAAAAEAAQBSAAAAmgAAAAAA
 --000000000000cd98100617e8acef--
 
-A few things here: First, that is obviously not the actual password, a file is included
-which is called evidence.zip but it's MIME encoded (see the Content-Transfer-Encoding),
-so we have a few steps. To start, the 5f made me think this is a string in hexidecimal
-format and I normally just use any converter that comes up in the Google search results,
-this time I found https://www.convertstring.com/EncodeDecode/HexDecode and a quick copy
+A few things here: First, that is obviously not the actual password; a file is included
+which is called evidence.zip, but it's MIME-encoded (see the Content-Transfer-Encoding),
+so we have a few steps. To start, the 5f made me think this is a string in hexadecimal
+format, and I normally just use any converter that comes up in the Google search results,
+this time, I found https://www.convertstring.com/EncodeDecode/HexDecode and a quick copy
 and paste gives us the following string:
 
 Secure_Code:Order_66
@@ -79,7 +79,7 @@ CrGuacbTdG6AcqrqzDiXWVhqKv6WuHlKUEsHCB+eC0pEAAAAOAAAAFBLAQIeAwoACQAAADewp1gf
 ngtKRAAAADgAAAAMABgAAAAAAAEAAACkgQAAAABldmlkZW5jZS50eHRVVAUAAxnrOmZ1eAsAAQTo
 AwAABAAAAABQSwUGAAAAAAEAAQBSAAAAmgAAAAAA" | base64 -d > evidence.zip
 
-Now unzip, make sure to propery type or copy and paste the password (I like copy and
+Now unzip, and make sure to properly type or copy and paste the password (I like to copy and
 paste to avoid mistakes) and read the file to get the flag:
 ┌──(trhodes㉿kali)-[~/Downloads/mytest]
 └─$ ls
